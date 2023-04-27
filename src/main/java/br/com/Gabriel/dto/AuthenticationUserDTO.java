@@ -2,7 +2,7 @@ package br.com.Gabriel.dto;
 
 import org.springframework.stereotype.Repository;
 
-import com.br.photos.photosCP.DTO.Mappers.ERole;
+import br.com.Gabriel.dto.Mappers.ERole;
 
 import lombok.Data;
 

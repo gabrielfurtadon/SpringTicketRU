@@ -11,9 +11,11 @@ import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
-import com.br.photos.photosCP.DTO.Exceptions.HandlerException;
-import com.br.photos.photosCP.DTO.Mappers.ERole;
-import com.br.photos.photosCP.Model.User;
+import br.com.Gabriel.dto.Exceptions.HandlerException;
+import br.com.Gabriel.dto.Mappers.ERole;
+import br.com.Gabriel.entities.User;
+
+// handler exception, erole, user
 
 @Component
 public class JwtService {

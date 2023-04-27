@@ -91,19 +91,6 @@ public class UserController {
         return userService.updateUser(user);
     }
 
-    // Set<Role> userRoles = user.getRoles();
-    @PutMapping(path = "/add-role")
-    public String addRoleToUser(@RequestBody User user) {
-
-        return utilityService.addRoleToUser(user);
-    }
-
-    @PutMapping(path = "/add-role-2")
-    public String addRoleToUser2(@RequestBody User user) {
-
-        return utilityService.addRoleToUser2(user);
-    }
-
     /*
      * if(user.getRole().getName().equals(ERole.ADMIN.toString())) {
      * // allow user to access admin resources

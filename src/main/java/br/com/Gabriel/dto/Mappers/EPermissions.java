@@ -1,4 +1,5 @@
-package com.br.photos.photosCP.DTO.Mappers;
+
+package br.com.Gabriel.dto.Mappers;
 
 public enum EPermissions {
     CREATE_ALBUMS {
