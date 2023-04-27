@@ -37,8 +37,13 @@
     <groupId>com.h2database</groupId>
     <artifactId>h2</artifactId>
 </dependency>
-		
-		
+
+
+		<dependency>
+			<groupId>br.com.Gabriel</groupId>
+			<artifactId>SpringBootRestJava</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
