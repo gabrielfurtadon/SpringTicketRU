@@ -44,17 +44,20 @@ public class UserService {
         try {
             boolean usernameExists = userRepository.existsByUsernameIgnoreCase(user.getUsername());
             boolean emailExists = userRepository.existsByEmailIgnoreCase(user.getEmail());
+            boolean raExists = userRepository.existsByRaIgnoreCase(user.getRa());
 
-            if (usernameExists) {
+            if (raExists) {
+                throw new HandlerException("ra already exists");
+            } else if (usernameExists) {
                 throw new HandlerException("username already exists");
             } else if (emailExists) {
                 throw new HandlerException("email is already in use");
             } else {
                 user.setPassword(HashManagerUtils.generateCrypt(user.getPassword()));
                 // add role USER to user.setRole
-                user.setRole(ERole.USER);
+                user.setRole(ERole.STUDENT);
                 List<String> UserToRolesList = new ArrayList<>();
-                UserToRolesList.add(ERole.USER.name());
+                UserToRolesList.add(ERole.STUDENT.name());
                 user.setRolesList(UserToRolesList);
                 userRepository.save(user);
                 return user;
@@ -90,6 +93,10 @@ public class UserService {
 
     public User findByUsername(String username) {
         return userRepository.findByUsernameIgnoreCase(username);
+    }
+
+    public User findByRa(String ra) {
+        return userRepository.findByRaIgnoreCase(ra);
     }
 
     public User updateUser2(User user) {

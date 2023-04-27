@@ -39,6 +39,8 @@ public class UtilityService {
 
         User result = findByUsername(user.getUsername());
 
+        System.out.println("result: " + result);
+
         List<User> idFound = getUsers(result);
 
         User userFound = idFound.get(0);

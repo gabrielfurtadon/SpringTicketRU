@@ -31,27 +31,15 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
-// what type of not notations are in hibernate.validator.constraints: 
-// https://docs.jboss.org/hibernate/validator/5.2/reference/en-US/html_single/#section-builtin-constraints
-// there are many notations in this package like notempty, notblank, notnull, etc
 
 import br.com.Gabriel.dto.Mappers.*;
 
-//import lombok.AllArgsConstructor;
-//import lombok.Builder;
-
-//import jakarta.validation.constraints.NotNull;
-
 import lombok.Getter;
-//import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-// @Builder
-// @NoArgsConstructor
-// @AllArgsConstructor
 @Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET deleted=true WHERE id = ?")
 @Where(clause = "deleted = false")
@@ -61,6 +49,11 @@ public class User {
     @NotNull
     @GeneratedValue
     private int id;
+
+    // colun RA
+    @Column(name = "ra", unique = true)
+    @NotEmpty(message = "O campo RA nao pode ser vazio")
+    private String ra;
 
     @Column(name = "username", unique = true)
     @NotEmpty(message = "O campo nome de usuario nao pode ser vazio")
@@ -111,38 +104,36 @@ public class User {
     // methods
 
     public User() {
+        this.role = ERole.STUDENT;
     }
 
-    public User(String username, String password) {
+    public User(String username, String password, String ra) {
         this.username = username;
         this.password = password;
+        this.ra = ra;
+        this.role = ERole.STUDENT;
     }
 
-    public User(String username, String password, String firstname, String lastname, String email) {
+    public User(String ra, String username, String password, String firstname, String lastname, String email) {
+        this.ra = ra;
         this.username = username;
         this.password = password;
         this.Firstname = firstname;
         this.Lastname = lastname;
         this.email = email;
+        this.role = ERole.STUDENT;
     }
 
-    public User(String username, String password, String firstname, String lastname, String email, byte[] photo) {
+    public User(String ra, String username, String password, String firstname, String lastname, String email,
+            byte[] photo) {
+        this.ra = ra;
         this.username = username;
         this.password = password;
         this.Firstname = firstname;
         this.Lastname = lastname;
         this.email = email;
         this.photo = photo;
-    }
+        this.role = ERole.STUDENT;
 
-    public User(String username, String password, String firstname, String lastname, String email, byte[] photo,
-            ERole role) {
-        this.username = username;
-        this.password = password;
-        this.Firstname = firstname;
-        this.Lastname = lastname;
-        this.email = email;
-        this.photo = photo;
-        this.role = role;
     }
 }

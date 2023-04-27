@@ -15,6 +15,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         // find by id
         User findById(int id);
 
+        User findByRaIgnoreCase(String ra);
+
         User findByEmailIgnoreCase(String email);
 
         User findByUsernameIgnoreCase(String username);
@@ -24,6 +26,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         Boolean existsByUsernameIgnoreCase(String username);
 
         Boolean existsByEmailIgnoreCase(String email);
+
+        Boolean existsByRaIgnoreCase(String ra);
 
         public List<User> findAll();
 

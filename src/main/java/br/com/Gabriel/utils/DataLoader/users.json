@@ -1,0 +1,46 @@
+{
+    "ra": "12345",
+    "username": "LuKreitor",
+    "password": "password123",
+    "firstname": "Lucas",
+    "lastname": "Martins",
+    "email": "johndoe@example.com"
+}
+
+
+{
+    "ra": "23456",
+    "username": "Laura",
+    "password": "password456",
+    "firstname": "Laura",
+    "lastname": "Doe",
+    "email": "janedoe@example.com"
+}
+
+{
+    "ra": "34567",
+    "username": "Bia",
+    "password": "password789",
+    "firstname": "Bia",
+    "lastname": "Smith",
+    "email": "bobsmith@example.com"
+    }
+
+    {
+        "ra": "45678",
+        "username": "Gabriel",
+        "password": "passwordabc",
+        "firstname": "Gabriel",
+        "lastname": "Jones",
+        "email": "sallyjones@example.com"
+        }
+
+
+        {
+            "ra": "56789",
+            "username": "Sumida",
+            "password": "passworddef",
+            "firstname": "Sumida",
+            "lastname": "Ross",
+            "email": "mikeross@example.com"
+            }
