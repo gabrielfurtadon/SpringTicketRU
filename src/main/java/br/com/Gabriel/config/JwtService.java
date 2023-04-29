@@ -80,6 +80,16 @@ public class JwtService {
         }
     }
 
+    public String getRaFromToken(String token) {
+        final Boolean isExpired = isTokenExpired(token);
+        if (isExpired == false) {
+            Claims claims = Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody();
+            return claims.getSubject();
+        } else {
+            throw new HandlerException("Login expired");
+        }
+    }
+
     public Boolean validateToken(String authToken, ERole role) {
         final String roleFromToken = getRoleFromToken(authToken);
         return (roleFromToken.equals(role.toString()) && !isTokenExpired(authToken));
