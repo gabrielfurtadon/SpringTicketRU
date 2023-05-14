@@ -136,4 +136,110 @@ public class User {
         this.role = ERole.STUDENT;
 
     }
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getRa() {
+		return ra;
+	}
+
+	public void setRa(String ra) {
+		this.ra = ra;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getFirstname() {
+		return Firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		Firstname = firstname;
+	}
+
+	public String getLastname() {
+		return Lastname;
+	}
+
+	public void setLastname(String lastname) {
+		Lastname = lastname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public byte[] getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public List<String> getRolesList() {
+		return rolesList;
+	}
+
+	public void setRolesList(List<String> rolesList) {
+		this.rolesList = rolesList;
+	}
+
+	public ERole getRole() {
+		return role;
+	}
+
+	public void setRole(ERole role) {
+		this.role = role;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+    
+    
 }
