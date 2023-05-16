@@ -14,12 +14,14 @@ import br.com.Gabriel.entities.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
         // find by id
         User findById(int id);
+        
+        User findByRa(String ra);
 
         User findByRaIgnoreCase(String ra);
 
         User findByEmailIgnoreCase(String email);
 
-        User findByUsernameIgnoreCase(String username);
+        User findByNameIgnoreCase(String name);
 
         User findByUsernameOrEmailIgnoreCase(String username, String email);
 

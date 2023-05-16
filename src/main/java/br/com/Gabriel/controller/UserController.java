@@ -57,17 +57,17 @@ public class UserController {
         return userService.createUser(user);
     }
 
-    @GetMapping(value = "/find-by-id/{id}")
-    public User findById(@PathVariable int id) {
+    @GetMapping(value = "/find-by-ra/{ra}")
+    public User findByRa(@PathVariable String ra) {
 
-        return userService.findById(id);
+        return userService.findByRa(ra);
 
     }
 
-    @GetMapping(value = "/find-by-user-name/{userName}")
-    public User findByUserName(@PathVariable String userName) {
+    @GetMapping(value = "/find-by-name/{name}")
+    public User findByName(@PathVariable String name) {
 
-        return userService.findByUsername(userName);
+        return userService.findByName(name);
 
     }
 
@@ -78,10 +78,10 @@ public class UserController {
 
     }
 
-    @DeleteMapping(value = "/delete/{id}")
-    public String deleteUser(@PathVariable int id) {
+    @DeleteMapping(value = "/delete/{ra}")
+    public String deleteUser(@PathVariable String ra) {
 
-        return userService.deleteUser(id);
+        return userService.deleteUser(ra);
 
     }
 

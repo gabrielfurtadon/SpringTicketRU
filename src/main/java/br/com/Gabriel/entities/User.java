@@ -55,10 +55,6 @@ public class User {
     @NotEmpty(message = "O campo RA nao pode ser vazio")
     private String ra;
 
-    @Column(name = "username", unique = true)
-    @NotEmpty(message = "O campo nome de usuario nao pode ser vazio")
-    private String username;
-
     // @NotNull(message = "O campo nome não pode ser vazio")
     @NotEmpty(message = "O campo senha nao pode ser vazio")
     private String password;
@@ -78,9 +74,6 @@ public class User {
     @NotEmpty(message = "O campo email nao pode ser vazio")
     private String email;
 
-    @Column(name = "photo")
-    @Lob
-    private byte[] photo; // this is for the profile picture, it will be stored as a blob in the database
 
     @Column(name = "created_at", insertable = true, updatable = true)
     @CreationTimestamp
@@ -107,16 +100,14 @@ public class User {
         this.role = ERole.STUDENT;
     }
 
-    public User(String username, String password, String ra) {
-        this.username = username;
+    public User(String ra,String password) {
+    	 this.ra = ra;
         this.password = password;
-        this.ra = ra;
         this.role = ERole.STUDENT;
     }
 
-    public User(String ra, String username, String password, String firstname, String lastname, String email) {
+    public User(String ra, String password, String firstname, String lastname, String email) {
         this.ra = ra;
-        this.username = username;
         this.password = password;
         this.Firstname = firstname;
         this.Lastname = lastname;
@@ -124,122 +115,5 @@ public class User {
         this.role = ERole.STUDENT;
     }
 
-    public User(String ra, String username, String password, String firstname, String lastname, String email,
-            byte[] photo) {
-        this.ra = ra;
-        this.username = username;
-        this.password = password;
-        this.Firstname = firstname;
-        this.Lastname = lastname;
-        this.email = email;
-        this.photo = photo;
-        this.role = ERole.STUDENT;
-
-    }
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getRa() {
-		return ra;
-	}
-
-	public void setRa(String ra) {
-		this.ra = ra;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getFirstname() {
-		return Firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		Firstname = firstname;
-	}
-
-	public String getLastname() {
-		return Lastname;
-	}
-
-	public void setLastname(String lastname) {
-		Lastname = lastname;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public byte[] getPhoto() {
-		return photo;
-	}
-
-	public void setPhoto(byte[] photo) {
-		this.photo = photo;
-	}
-
-	public Timestamp getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Timestamp createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Timestamp getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Timestamp updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public List<String> getRolesList() {
-		return rolesList;
-	}
-
-	public void setRolesList(List<String> rolesList) {
-		this.rolesList = rolesList;
-	}
-
-	public ERole getRole() {
-		return role;
-	}
-
-	public void setRole(ERole role) {
-		this.role = role;
-	}
-
-	public boolean isDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
-	}
-    
     
 }
