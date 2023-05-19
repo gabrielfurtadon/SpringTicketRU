@@ -8,6 +8,7 @@ Com nossa solução, os estudantes poderão comprar as fichas direto pelo celula
 ## 💻 Técnologias Utilizada no backend : 
 - Java
 - Spring Boot
+- Hibernate
 - JWT Token
 - H2 Data Base
 - SQL
