@@ -2,28 +2,21 @@ package br.com.Gabriel.entities;
 
 import jakarta.persistence.Column;
 
-//import javax.validation.constraints.NotNull;
-//import javax.validation.constraints.Size;
-
-//import org.springframework.transaction.annotation.EnableTransactionManagement;
-
 import jakarta.persistence.Entity;
-//import jakarta.persistence.EnumType;
-//import jakarta.persistence.Enumerated;
+
 
 import jakarta.persistence.GeneratedValue;
-//import jakarta.persistence.GenerationType;
-//import jakarta.persistence.GenerationType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import jakarta.persistence.Lob;
 
-//jakarta validation for email
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -32,22 +25,30 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.Gabriel.dto.Mappers.*;
 
 import lombok.Getter;
 import lombok.Setter;
+import java.io.Serializable;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "users")
-@SQLDelete(sql = "UPDATE users SET deleted=true WHERE id = ?")
-@Where(clause = "deleted = false")
-public class User {
+@Table(name = "tb_user")
+//@SQLDelete(sql = "UPDATE users SET deleted=true WHERE id = ?") // ao invés de deletar faz um update alterando o valor da coluna
+//@Where(clause = "deleted = false")
+public class User implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @NotNull
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     // colun RA
@@ -93,6 +94,12 @@ public class User {
     // @Builder.Default
     @Column(name = "deleted", insertable = true, updatable = true)
     private boolean deleted = Boolean.FALSE;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Pedido> pedidos = new ArrayList<>();
+    
+    
 
     // methods
 

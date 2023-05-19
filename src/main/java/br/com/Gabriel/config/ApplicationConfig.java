@@ -1,57 +1,51 @@
 package br.com.Gabriel.config;
 
-/*
- * import lombok.RequiredArgsConstructor;
- * import org.springframework.context.annotation.Bean;
- * import org.springframework.context.annotation.Configuration;
- * import org.springframework.security.authentication.AuthenticationManager;
- * import org.springframework.security.authentication.AuthenticationProvider;
- * import
- * org.springframework.security.authentication.dao.DaoAuthenticationProvider;
- * import
- * org.springframework.security.config.annotation.authentication.configuration.
- * AuthenticationConfiguration;
- * import org.springframework.security.core.userdetails.UserDetails;
- * import org.springframework.security.core.userdetails.UserDetailsService;
- * import
- * org.springframework.security.core.userdetails.UsernameNotFoundException;
- * import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
- * import org.springframework.security.crypto.password.PasswordEncoder;
- * 
- * import com.br.photos.photosCP.Repository.UserRepository;
- * 
- * @Configuration
- * 
- * @RequiredArgsConstructor
- * public class ApplicationConfig {
- * 
- * private final UserRepository repository;
- * 
- * @Bean
- * public UserDetailsService userDetailsService() {
- * 
- * // check if user exists
- * return username -> repository.findByEmailIgnoreCase(username);
- * }
- * 
- * @Bean
- * public AuthenticationProvider authenticationProvider() {
- * DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
- * authProvider.setUserDetailsService(userDetailsService());
- * authProvider.setPasswordEncoder(passwordEncoder());
- * return authProvider;
- * }
- * 
- * @Bean
- * public AuthenticationManager
- * authenticationManager(AuthenticationConfiguration config) throws Exception {
- * return config.getAuthenticationManager();
- * }
- * 
- * @Bean
- * public PasswordEncoder passwordEncoder() {
- * return new BCryptPasswordEncoder();
- * }
- * 
- * }
- */
+import java.time.Instant;
+import java.util.Arrays;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+
+import br.com.Gabriel.dto.Mappers.EStatus;
+import br.com.Gabriel.entities.Pedido;
+import br.com.Gabriel.entities.User;
+import br.com.Gabriel.repositories.PedidoRepository;
+import br.com.Gabriel.repositories.UserRepository;
+
+
+
+@Configuration // MOSTAR QUE É UMA CLASSE DE CONFIGURAÇÃO
+@Profile("test") // TEM QUE SER IGUAL AO PROFILE DO APLICATION PROPERTIES ,RODA SOMENTE NO PERFIL DE TESTE
+public class ApplicationConfig implements CommandLineRunner{
+	
+	@Autowired //COM ISSO O SPRING VE A DEPENDENCIA E ASSOCIAR UMA INSTANCIA DE USERREPOSITRY AQUI DENTRO
+	private UserRepository userRepository;
+	
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	
+	@Override
+	public void run(String... args) throws Exception { // TUDO QUE TIVER DENTRO DO RUN VAI SER EXECUTADO QUANDO A APP FOR INICIADA
+		
+		
+		
+		
+		
+		
+		User u1 = new User("2347962", "123", "Gabriel", "Neves", "gabriel@gmail.com"); // id null pois vai gerar no banco
+		
+		
+		Pedido p1 = new Pedido(1, Instant.parse("2023-04-20T19:53:07Z"), 2, EStatus.PAGO, u1); //PASSANDO O USUARIO PARA FAZER A ASSOCIAÇÃO DESSE OBJ
+		
+		
+		//SALVAR NO BANCO como lista (array)
+		userRepository.save(u1);
+		pedidoRepository.save(p1);
+		
+		
+		
+	}
+	
+}

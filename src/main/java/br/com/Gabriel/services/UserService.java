@@ -13,9 +13,9 @@ import br.com.Gabriel.utils.*;
 import br.com.Gabriel.dto.Exceptions.HandlerException;
 import br.com.Gabriel.dto.Mappers.*;
 
-import jakarta.transaction.Transactional;
 
-@Transactional
+
+//@Transactional
 @Service
 public class UserService {
 
@@ -86,9 +86,9 @@ public class UserService {
         }
     }
 
-    public User findByName(String name) {
-        return userRepository.findByNameIgnoreCase(name);
-    }
+//    public User findByName(String name) {
+//        return userRepository.findByFirstnameIgnoreCase(name);
+//    }
 
 
 

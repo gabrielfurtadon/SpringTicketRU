@@ -26,7 +26,7 @@ import br.com.Gabriel.services.UtilityService;
 
 //localhost:8080/user/create
 @RestController
-@RequestMapping("user")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -63,13 +63,13 @@ public class UserController {
         return userService.findByRa(ra);
 
     }
-
-    @GetMapping(value = "/find-by-name/{name}")
-    public User findByName(@PathVariable String name) {
-
-        return userService.findByName(name);
-
-    }
+//
+//    @GetMapping(value = "/find-by-name/{name}")
+//    public User findByName(@PathVariable String name) {
+//
+//        return userService.findByName(name);
+//
+//    }
 
     @GetMapping(value = "/find-all")
     public List<User> findAllUsers() {
