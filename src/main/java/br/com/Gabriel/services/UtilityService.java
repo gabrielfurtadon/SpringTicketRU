@@ -31,13 +31,13 @@ public class UtilityService {
     @Autowired
     private JwtService jwtHandler;
 
-    public User findByRa(String id) {
-        return userRepository.findByRaIgnoreCase(id);
+    public User findByUsername(String id) {
+        return userRepository.findByUsernameIgnoreCase(id);
     }
 
     public ResponseEntity<String> execute(AuthenticationUserDTO user) {
 
-        User result = findByRa(user.getRa());
+        User result = findByUsername(user.getUsername());
 
         System.out.println("result: " + result);
 
@@ -45,12 +45,12 @@ public class UtilityService {
 
         User userFound = idFound.get(0);
 
-        if (userFound == null || !userFound.getRa().equals(user.getRa())
+        if (userFound == null || !userFound.getUsername().equals(user.getUsername())
                 || !Boolean.TRUE.equals(HashManagerUtils.validateHash(user.getPassword(), userFound.getPassword()))) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect ra or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username or password");
         }
 
-        String token = jwtHandler.generateToken(userFound.getRa(), userFound.getRole());
+        String token = jwtHandler.generateToken(userFound.getUsername(), userFound.getRole());
 
         return ResponseEntity.ok(token);
     }

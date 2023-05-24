@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @Repository
 public class AuthenticationUserDTO {
-    private String ra;
+    private String username;
     private String password;
     private ERole role;
 	public String getRa() {
