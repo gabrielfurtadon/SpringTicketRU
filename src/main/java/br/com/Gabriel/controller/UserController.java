@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,17 +40,35 @@ public class UserController {
     @Autowired
     UtilityService utilityService = new UtilityService();
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping(value = "/login", produces = "application/json")
     @ResponseBody
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ApiResponseDTO login(@RequestBody AuthenticationUserDTO user) {
         try {
             ResponseEntity<String> token;
+            System.out.println("token: " + user.getRa() + " " + user.getPassword());
             token = handleUser.execute(user);
+
             return new ApiResponseDTO(new TokenResponseDTO(token));
         } catch (Exception e) {
             throw new HandlerException(e.getMessage());
         }
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping(value = "/me", produces = "application/json")
+    public ResponseEntity<User> getCurrentUser(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserDetails) {
+                String ra = ((UserDetails) principal).getUsername(); // Assuming RA is stored in the username field
+                User user = userService.findByRa(ra);
+                if (user != null) {
+                    return ResponseEntity.ok(user);
+                }
+            }
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -63,13 +83,13 @@ public class UserController {
         return userService.findByRa(ra);
 
     }
-//
-//    @GetMapping(value = "/find-by-name/{name}")
-//    public User findByName(@PathVariable String name) {
-//
-//        return userService.findByName(name);
-//
-//    }
+    //
+    // @GetMapping(value = "/find-by-name/{name}")
+    // public User findByName(@PathVariable String name) {
+    //
+    // return userService.findByName(name);
+    //
+    // }
 
     @GetMapping(value = "/find-all")
     public List<User> findAllUsers() {

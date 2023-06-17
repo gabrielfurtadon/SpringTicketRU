@@ -1,0 +1,9 @@
+Ambiente	Rota base
+Produção	https://api-pix.gerencianet.com.br
+Homologação	https://api-pix-h.gerencianet.com.br
+
+
+clientID = Client_Id_767a529757048b3308a312817f08736ecc667823
+chave client secret = Client_Secret_b75f6bf132143ebde0831a8c8dccac90cee64727
+
+openssl pkcs12 -in producao-446205-TicketRU.p12 -out producao-446205-TicketRU.pem -nodes

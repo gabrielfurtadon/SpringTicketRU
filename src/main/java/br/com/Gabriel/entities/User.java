@@ -4,11 +4,9 @@ import jakarta.persistence.Column;
 
 import jakarta.persistence.Entity;
 
-
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
 
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -17,6 +15,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -24,6 +23,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -37,16 +41,16 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Table(name = "tb_user")
-//@SQLDelete(sql = "UPDATE users SET deleted=true WHERE id = ?") // ao invés de deletar faz um update alterando o valor da coluna
-//@Where(clause = "deleted = false")
-public class User implements Serializable {
+@SQLDelete(sql = "UPDATE users SET deleted=true WHERE id = ?")
+@Where(clause = "deleted = false")
+public class User implements Serializable, UserDetails {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Id
+    @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -75,7 +79,6 @@ public class User implements Serializable {
     @NotEmpty(message = "O campo email nao pode ser vazio")
     private String email;
 
-
     @Column(name = "created_at", insertable = true, updatable = true)
     @CreationTimestamp
     private Timestamp createdAt;
@@ -94,12 +97,10 @@ public class User implements Serializable {
     // @Builder.Default
     @Column(name = "deleted", insertable = true, updatable = true)
     private boolean deleted = Boolean.FALSE;
-    
+
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Pedido> pedidos = new ArrayList<>();
-    
-    
 
     // methods
 
@@ -107,8 +108,8 @@ public class User implements Serializable {
         this.role = ERole.STUDENT;
     }
 
-    public User(String ra,String password) {
-    	 this.ra = ra;
+    public User(String ra, String password) {
+        this.ra = ra;
         this.password = password;
         this.role = ERole.STUDENT;
     }
@@ -122,5 +123,37 @@ public class User implements Serializable {
         this.role = ERole.STUDENT;
     }
 
-    
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
+        // Add any additional roles or authorities here if needed
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return ra;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 }
