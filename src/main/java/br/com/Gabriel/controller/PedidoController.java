@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import br.com.Gabriel.entities.Pedido;
+import br.com.Gabriel.entities.User;
 import br.com.Gabriel.services.PedidoService;
+import br.com.Gabriel.services.UserService;
 
 //localhost:8080/user/create
 @RestController
@@ -20,6 +21,12 @@ public class PedidoController {
 
 	@Autowired
 	private PedidoService controller;
+	
+	@Autowired
+    private PedidoService pedidoService;
+    
+    @Autowired
+    private UserService userService;
 	
 	//METODO ENDPOINT PARA ACESSAR OS PEDIDOS
 		@GetMapping //MOSTRAR QUE ESSE METODO RESPONDE A UMA REQUISIÇÃO TIPO GET 
@@ -34,5 +41,31 @@ public class PedidoController {
 			Pedido obj = controller.findById(id);
 			return ResponseEntity.ok().body(obj); //JOGANDO O OBJ QUE FOI ACHADO COMO RESPOSTA 
 		}
+		
+		// "HISTÓRICO" DE COMPRA DE FICHAS 
+		@GetMapping(value = "/user/{userId}")
+	    public ResponseEntity<List<Pedido>> findPedidosByUser(@PathVariable Long userId) {
+	        User user = userService.findById(userId);
+	        if (user == null) {
+	            return ResponseEntity.notFound().build();
+	        }
+	        List<Pedido> pedidos = pedidoService.findPedidosByUser(user);
+	        return ResponseEntity.ok().body(pedidos);
+	    }
+
+		
+		
+		
+		
+	
+
+	
+
+
+
+
+
+		
+		
    
 }

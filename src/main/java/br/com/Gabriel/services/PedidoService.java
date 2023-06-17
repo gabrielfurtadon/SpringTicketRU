@@ -42,6 +42,16 @@ public class PedidoService {
         return pedidoRepository.findById(id);
     }
 
+	public List<Pedido> findPedidosByUser(User user) {
+		// TODO Auto-generated method stub
+		return pedidoRepository.findByUser(user);
+	}
+    
+//    public List<User> findByUser(Long id) {
+//    	
+//    	return pedidoRepository.findByUser(1L);
+//    }
+
     
 
    

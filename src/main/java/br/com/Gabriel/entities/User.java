@@ -49,7 +49,7 @@ public class User implements Serializable {
 	@Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     // colun RA
     @Column(name = "ra", unique = true)
@@ -64,11 +64,16 @@ public class User implements Serializable {
     @Column(name = "firstname")
     @NotEmpty(message = "O campo nome nao pode ser vazio")
     private String Firstname;
-
+   
     // @NotNull(message = "O Campo sobrenome não pode ser vazio")
     @Column(name = "lastname")
     @NotEmpty(message = "O campo sobrenome nao pode ser vazio")
     private String Lastname;
+    
+    
+    @Column(name = "saldo")
+    private int saldo;
+
 
     // @NotNull(message = "O Campo email não pode ser vazio")
     @Column(name = "email", unique = true)
@@ -113,14 +118,18 @@ public class User implements Serializable {
         this.role = ERole.STUDENT;
     }
 
-    public User(String ra, String password, String firstname, String lastname, String email) {
-        this.ra = ra;
+    public User(Long id, String ra, String password, String firstname, String lastname, int saldo, String email) {
+        this.id = id;
+    	this.ra = ra;
         this.password = password;
         this.Firstname = firstname;
         this.Lastname = lastname;
+        this.saldo = saldo;
         this.email = email;
-        this.role = ERole.STUDENT;
+        //this.role = ERole.STUDENT;
     }
+    
+    
 
     
 }
