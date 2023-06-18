@@ -11,9 +11,9 @@ import br.com.Gabriel.entities.User;
 
 //import jakarta.transaction.Transactional;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Long> {
         // find by id
-        User findById(int id);
+        //User findById(Long id);
         
         User findByRa(String ra);
 
@@ -21,16 +21,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
         User findByEmailIgnoreCase(String email);
 
-       // User findByFirstnameIgnoreCase(String Fistname);
-
-        //User findByUsernameOrEmailIgnoreCase(String username, String email);
-
-       // Boolean existsByUsernameIgnoreCase(String username);
+//        int getSaldo(int saldo);
+      
 
         Boolean existsByEmailIgnoreCase(String email);
 
         Boolean existsByRaIgnoreCase(String ra);
 
-        public List<User> findAll();
+        
 
 }

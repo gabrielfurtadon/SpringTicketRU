@@ -1,3 +1,8 @@
+/*
+ * 		COMPRA DE FICHAS
+ * 
+ * */
+
 package br.com.Gabriel.entities;
 
 
@@ -7,6 +12,8 @@ import java.util.Objects;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.Gabriel.dto.Mappers.EStatus;
 import jakarta.persistence.Entity;
@@ -41,11 +48,13 @@ public class Pedido implements Serializable{
 	
 	private Instant momento;
 	
+	private Double preco;
+	
 	private int quantidade;
 	
 	private Integer status;
 	
-	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -54,12 +63,14 @@ public class Pedido implements Serializable{
 	
 	public Pedido() {}
 	
-	public Pedido(int id, Instant momento, int quantidade, EStatus status, User user) {
+	public Pedido(int id, Instant momento, int quantidade, double preco, EStatus status, User user) {
 		this.id = id;
 		this.momento = momento;
 		this.quantidade = quantidade;
+		this.preco = quantidade * 3.50;
 		setStatus(status);
 		this.user = user;
+		user.setSaldo(user.getSaldo() + quantidade);
 	}
 	
 	public EStatus getStatus() {

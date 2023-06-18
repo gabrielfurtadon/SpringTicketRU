@@ -2,9 +2,10 @@ package br.com.Gabriel.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import br.com.Gabriel.entities.User;
@@ -21,6 +22,12 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+    
+    public User findById(Long id) {
+		Optional<User> obj = userRepository.findById(id); // optional tira a necessidade de verificar se é nulo 
+		return obj.get(); // VAI RETORNAR UM OBJETO DO TIPO USER QUE ESTIVER DENTRO DO OPTIONAL (VAI RETORNAR UMA EXESSÃO SE NAO TIVER O OBJ NO OPTIONAL)
+		//return obj.orElseThrow(() -> new ResourceNotFoundExceptions(id));   // orElseThrow -> VAI TENTAR DAR O GET, SE NAO DER VAI LANÇAR A EXCESSÃO
+	}
 
     public String deleteUser(String ra) {
         User user = userRepository.findByRa(ra);
@@ -39,6 +46,11 @@ public class UserService {
     public User findByRa(String ra) {
         return userRepository.findByRa(ra);
     }
+    
+//    public int getSaldo(int saldo) {
+//    	return userRepository.getSaldo(saldo);
+//    }
+    
 
     public User createUser(User user) {
         try {
@@ -64,27 +76,39 @@ public class UserService {
         }
 
     }
-
-    public String updateUser(User user) {
-        try {
-            User userToUpdate = userRepository.findById(user.getId());
-
-            if (userToUpdate == null) {
-
-                throw new HandlerException("user not found");
-            } else {
-                System.out.println(userToUpdate);
-                userToUpdate.setEmail(user.getEmail());
-                userToUpdate.setFirstname(user.getFirstname());
-                userToUpdate.setLastname(user.getLastname());
-                userToUpdate.setPassword(HashManagerUtils.generateCrypt(user.getPassword()));
-                userRepository.save(userToUpdate);
-                return "user " + userToUpdate.getFirstname() + " updated successfully";
-            }
-        } catch (Exception e) {
-            throw new HandlerException("Internal server error: could not update user");
+    
+    public int getSaldo(Long userId) throws NotFoundException {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return user.getSaldo();
+        } else {
+            throw new NotFoundException();
         }
     }
+
+
+
+//    public String updateUser(User user) {
+//        try {
+//            User userToUpdate = userRepository.findById(user.getId());
+//
+//            if (userToUpdate == null) {
+//
+//                throw new HandlerException("user not found");
+//            } else {
+//                System.out.println(userToUpdate);
+//                userToUpdate.setEmail(user.getEmail());
+//                userToUpdate.setFirstname(user.getFirstname());
+//                userToUpdate.setLastname(user.getLastname());
+//                userToUpdate.setPassword(HashManagerUtils.generateCrypt(user.getPassword()));
+//                userRepository.save(userToUpdate);
+//                return "user " + userToUpdate.getFirstname() + " updated successfully";
+//            }
+//        } catch (Exception e) {
+//            throw new HandlerException("Internal server error: could not update user");
+//        }
+//    }
 
 //    public User findByName(String name) {
 //        return userRepository.findByFirstnameIgnoreCase(name);

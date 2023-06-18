@@ -3,6 +3,7 @@ package br.com.Gabriel.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +27,7 @@ import br.com.Gabriel.entities.*;
 import br.com.Gabriel.services.UserService;
 import br.com.Gabriel.services.UtilityService;
 
-//localhost:8080/user/create
+//localhost:8080/users/create
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -39,6 +40,13 @@ public class UserController {
 
     @Autowired
     UtilityService utilityService = new UtilityService();
+
+    @GetMapping(value = "/{id}") // PARA FALAR QUE A URL TEM UM PARAMETRO que é o id
+    public ResponseEntity<User> findById(@PathVariable Long id) { // PARA O SPRING ACEITAR O ID COMO PARAMETRO QUE VAI
+                                                                  // CHEGAR NA URL
+        User obj = userService.findById(id);
+        return ResponseEntity.ok().body(obj); // JOGANDO O OBJ QUE FOI ACHADO COMO RESPOSTA (ok 200)
+    }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping(value = "/login", produces = "application/json")
@@ -83,19 +91,25 @@ public class UserController {
         return userService.findByRa(ra);
 
     }
-    //
-    // @GetMapping(value = "/find-by-name/{name}")
-    // public User findByName(@PathVariable String name) {
-    //
-    // return userService.findByName(name);
-    //
-    // }
 
     @GetMapping(value = "/find-all")
     public List<User> findAllUsers() {
 
         return userService.findAll();
 
+    }
+
+    // VER SALDO DO USER POR ID
+    @GetMapping(value = "/saldo/{id}")
+    public ResponseEntity<Integer> getUserSaldo(@PathVariable Long id) throws NotFoundException {
+        int saldo = userService.getSaldo(id);
+        return ResponseEntity.ok().body(saldo);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<User>> findAll() {
+        List<User> list = userService.findAll();
+        return ResponseEntity.ok().body(list);
     }
 
     @DeleteMapping(value = "/delete/{ra}")
@@ -105,17 +119,4 @@ public class UserController {
 
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @PutMapping(path = "/update")
-    public String updateUser(@RequestBody User user) {
-        return userService.updateUser(user);
-    }
-
-    /*
-     * if(user.getRole().getName().equals(ERole.ADMIN.toString())) {
-     * // allow user to access admin resources
-     * } else {
-     * // redirect user to access denied page
-     * }
-     */
 }
