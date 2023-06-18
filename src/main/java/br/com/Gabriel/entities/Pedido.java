@@ -1,21 +1,20 @@
-/*
- * 		COMPRA DE FICHAS
- * 
- * */
 
 package br.com.Gabriel.entities;
 
-
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Objects;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.Gabriel.dto.Mappers.EStatus;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,68 +30,61 @@ import br.com.Gabriel.entities.Ficha;
 @Entity
 @Getter
 @Setter
-@Table(name = "tb_pedido")
-//@SQLDelete(sql = "UPDATE pedidos SET deleted=true WHERE id = ?") // ao invés de deletar faz um update alterando o valor da coluna
-//@Where(clause = "deleted = false")
-public class Pedido implements Serializable{
-	
+@Table(name = "pedidos")
+public class Pedido implements Serializable {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @NotNull
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@NotNull
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	private Instant momento;
-	
+
+	@Column(name = "comprado_em", insertable = true, updatable = true)
+	@CreationTimestamp
+	private Timestamp createdAt;
+
+	@Column(name = "pago_em", insertable = true, updatable = true)
+	@UpdateTimestamp
+	private Timestamp updatedAt;
+
+	@Column(name = "preco")
 	private Double preco;
-	
+
+	@Column(name = "quantidade")
 	private int quantidade;
-	
-	private Integer status;
-	
-	@JsonIgnore
+
+	@Column(name = "status")
+	private EStatus status;
+
+	@Column(name = "ra")
+	private String ra;
+
 	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user") // Update the column name to "user_id"
 	private User user;
-	
-	
-	
-	public Pedido() {}
-	
-	public Pedido(int id, Instant momento, int quantidade, double preco, EStatus status, User user) {
-		this.id = id;
-		this.momento = momento;
+
+	public Pedido() {
+		this.status = EStatus.PENDENTE;
+	}
+
+	public Pedido(int quantidade, String ra) {
 		this.quantidade = quantidade;
 		this.preco = quantidade * 3.50;
-		setStatus(status);
-		this.user = user;
-		user.setSaldo(user.getSaldo() + quantidade);
-	}
-	
-	public EStatus getStatus() {
-		return EStatus.valueOf(status);
-	}
-	
-
-	public void setStatus(EStatus status) {
-		if(status != null) {
-		this.status =  status.getCode();
-		}
+		this.ra = ra;
+		this.status = EStatus.PENDENTE;
 	}
 
-	
 	public Double total() {
 		Ficha ficha = new Ficha();
 		double sum = ficha.preco * quantidade;
 		return sum;
-	
+
 	}
-	
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -109,14 +101,5 @@ public class Pedido implements Serializable{
 		Pedido other = (Pedido) obj;
 		return id == other.id;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-
 
 }

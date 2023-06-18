@@ -1,6 +1,7 @@
 package br.com.Gabriel.APIPaymentsEFI.gerencianet.pix.service;
 
 import java.io.FileNotFoundException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,7 @@ public class PixService {
      *         Gerencianet API.
      */
     public List<String> generateCharge(String valor) throws FileNotFoundException {
+
         // transform the value to string
 
         String campo1 = "Informação Adicional1 do PSP-Recebedor";
@@ -65,7 +67,7 @@ public class PixService {
         try {
             Gerencianet gn = new Gerencianet(options);
             JSONObject response = gn.call("pixCreateImmediateCharge", new HashMap<String, String>(), body);
-
+            System.out.println(response.toString());
             // Extract the values from the response and store them in an ArrayList
             List<String> values = new ArrayList<>();
             values.add(response.getJSONObject("loc").getString("location"));
@@ -77,6 +79,8 @@ public class PixService {
             values.add(response.getJSONObject("valor").getString("original"));
             values.add(response.getString("chave"));
             values.add(String.valueOf(response.getJSONObject("calendario").getInt("expiracao")));
+            String status = response.getString("status");
+            values.add(status);
 
             return values;
         } catch (GerencianetException e) {
@@ -117,13 +121,45 @@ public class PixService {
         }
     }
 
+    public void listCharges(LocalDateTime startTime, LocalDateTime endTime) throws FileNotFoundException {
+        Credentials credentials = new Credentials();
+
+        JSONObject options = new JSONObject();
+        options.put("client_id", credentials.getClientId());
+        options.put("client_secret", credentials.getClientSecret());
+        options.put("certificate", credentials.getCertificate());
+        options.put("sandbox", credentials.isSandbox());
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("inicio", "2023-06-18T00:00:00Z");
+        params.put("fim", "2023-06-18T20:00:00Z");
+
+        try {
+            Gerencianet gn = new Gerencianet(options);
+            JSONObject response = gn.call("pixListCharges", params, new JSONObject());
+            System.out.println(response);
+        } catch (GerencianetException e) {
+            System.out.println(e.getError());
+            System.out.println(e.getErrorDescription());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public static void main(String[] args) throws FileNotFoundException {
         PixService pixService = new PixService();
 
-        // System.out.println(pixService.generateCharge(0.01));
+        // System.out.println(pixService.generateCharge("0.01"));
+        // System.out.println("\n\n\n\n\n\n\n -- \n\n\n\n\n\n\n");
 
         // call the method for generate QRCode
-        System.out.println(pixService.generateQRCode("17"));
+        // System.out.println(pixService.generateQRCode("17"));
+
+        // System.out.println(pixService.getChargeInformation("55"));
+
+        // pixService.getStatus("55");
+
+        pixService.listCharges(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
     }
 
 }

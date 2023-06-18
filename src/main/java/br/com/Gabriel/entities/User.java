@@ -40,7 +40,7 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@Table(name = "tb_user")
+@Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET deleted=true WHERE id = ?")
 @Where(clause = "deleted = false")
 public class User implements Serializable, UserDetails {
@@ -67,17 +67,15 @@ public class User implements Serializable, UserDetails {
     // @NotNull(message = "O Campo primeiro nome não pode ser vazio")
     @Column(name = "firstname")
     @NotEmpty(message = "O campo nome nao pode ser vazio")
-    private String Firstname;
-   
+    private String firstname;
+
     // @NotNull(message = "O Campo sobrenome não pode ser vazio")
     @Column(name = "lastname")
     @NotEmpty(message = "O campo sobrenome nao pode ser vazio")
-    private String Lastname;
-    
-    
+    private String lastname;
+
     @Column(name = "saldo")
     private int saldo;
-
 
     // @NotNull(message = "O Campo email não pode ser vazio")
     @Column(name = "email", unique = true)
@@ -121,16 +119,14 @@ public class User implements Serializable, UserDetails {
 
     public User(Long id, String ra, String password, String firstname, String lastname, int saldo, String email) {
         this.id = id;
-    	this.ra = ra;
+        this.ra = ra;
         this.password = password;
-        this.Firstname = firstname;
-        this.Lastname = lastname;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.saldo = saldo;
         this.email = email;
-        //this.role = ERole.STUDENT;
+        // this.role = ERole.STUDENT;
     }
-    
-    
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
