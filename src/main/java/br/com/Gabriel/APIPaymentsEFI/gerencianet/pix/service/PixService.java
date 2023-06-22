@@ -2,7 +2,9 @@ package br.com.Gabriel.APIPaymentsEFI.gerencianet.pix.service;
 
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,7 +123,70 @@ public class PixService {
         }
     }
 
-    public void listCharges(LocalDateTime startTime, LocalDateTime endTime) throws FileNotFoundException {
+    public JSONObject listCharges(LocalDateTime startTime, LocalDateTime endTime) throws FileNotFoundException {
+        Credentials credentials = new Credentials();
+
+        String startTimeString = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+        String endTimeString = endTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+
+        System.out.println(startTimeString);
+        JSONObject options = new JSONObject();
+        options.put("client_id", credentials.getClientId());
+        options.put("client_secret", credentials.getClientSecret());
+        options.put("certificate", credentials.getCertificate());
+        options.put("sandbox", credentials.isSandbox());
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("inicio", startTimeString); // "2023-06-22T00:00:00Z
+        params.put("fim", endTimeString);
+
+        try {
+            Gerencianet gn = new Gerencianet(options);
+            JSONObject response = gn.call("pixListCharges", params, new JSONObject());
+            System.out.println(response);
+            return response;
+
+        } catch (GerencianetException e) {
+            System.out.println(e.getError());
+            System.out.println(e.getErrorDescription());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public List<Map<String, String>> getChargeStatus(Integer id, LocalDateTime startTime, LocalDateTime endTime)
+            throws FileNotFoundException {
+        JSONObject response = listCharges(startTime, endTime);
+
+        if (response != null) {
+            JSONArray cobs = response.getJSONArray("cobs");
+            if (cobs != null) {
+                for (int i = 0; i < cobs.length(); i++) {
+                    JSONObject cob = cobs.getJSONObject(i);
+                    JSONObject charge = cob.getJSONObject("loc");
+                    if (charge.getInt("id") == id) {
+                        Map<String, String> values = new HashMap<>();
+                        values.put("location", charge.getString("location"));
+                        values.put("id", String.valueOf(charge.getInt("id")));
+                        values.put("criacao", charge.getString("criacao"));
+                        values.put("tipoCob", charge.getString("tipoCob"));
+                        values.put("cpf", cob.getJSONObject("devedor").getString("cpf"));
+                        values.put("nome", cob.getJSONObject("devedor").getString("nome"));
+                        values.put("original", cob.getJSONObject("valor").getString("original"));
+                        values.put("chave", cob.getString("chave"));
+                        values.put("expiracao", String.valueOf(cob.getJSONObject("calendario").getInt("expiracao")));
+                        values.put("status", cob.getString("status"));
+
+                        return Arrays.asList(values);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public String getChargeStatus2(String id) throws FileNotFoundException {
         Credentials credentials = new Credentials();
 
         JSONObject options = new JSONObject();
@@ -130,20 +195,23 @@ public class PixService {
         options.put("certificate", credentials.getCertificate());
         options.put("sandbox", credentials.isSandbox());
 
-        HashMap<String, String> params = new HashMap<>();
-        params.put("inicio", "2023-06-18T00:00:00Z");
-        params.put("fim", "2023-06-18T20:00:00Z");
-
         try {
             Gerencianet gn = new Gerencianet(options);
-            JSONObject response = gn.call("pixListCharges", params, new JSONObject());
-            System.out.println(response);
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("id", "85");
+            JSONObject response = gn.call("pixDetailCharge", params, new JSONObject());
+            System.out.println(response.toString());
+
+            String status = response.getString("status");
+            return status;
+
         } catch (GerencianetException e) {
             System.out.println(e.getError());
             System.out.println(e.getErrorDescription());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return null;
     }
 
     public static void main(String[] args) throws FileNotFoundException {
