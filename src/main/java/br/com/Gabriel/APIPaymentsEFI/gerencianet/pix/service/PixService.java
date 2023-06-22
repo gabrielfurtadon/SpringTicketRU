@@ -69,7 +69,7 @@ public class PixService {
         try {
             Gerencianet gn = new Gerencianet(options);
             JSONObject response = gn.call("pixCreateImmediateCharge", new HashMap<String, String>(), body);
-            System.out.println(response.toString());
+            // System.out.println(response.toString());
             // Extract the values from the response and store them in an ArrayList
             List<String> values = new ArrayList<>();
             values.add(response.getJSONObject("loc").getString("location"));
