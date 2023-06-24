@@ -125,12 +125,14 @@ public class PixController {
             @PathVariable String startTime,
             @PathVariable String endTime) {
         try {
+
             DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
 
             LocalDateTime startDateTime = LocalDateTime.parse(startTime, formatter);
             LocalDateTime endDateTime = LocalDateTime.parse(endTime, formatter);
             List<Map<String, String>> chargeStatus = pixService.getChargeStatus(Integer.parseInt(id), startDateTime,
                     endDateTime);
+            System.out.println(chargeStatus);
             return chargeStatus != null ? ResponseEntity.ok(chargeStatus) : ResponseEntity.notFound().build();
         } catch (FileNotFoundException e) {
             return ResponseEntity.badRequest().build();

@@ -46,7 +46,6 @@ public class PixService {
         String chavePix = "auxlucas57@gmail.com";
         String solicitacaoPagador = "Serviço realizado";
         Credentials credentials = new Credentials();
-        System.out.println(valor);
 
         JSONObject options = new JSONObject();
         options.put("client_id", credentials.getClientId());
@@ -129,7 +128,8 @@ public class PixService {
         String startTimeString = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
         String endTimeString = endTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
 
-        System.out.println(startTimeString);
+        System.out.println("start time list charges" + startTimeString);
+        System.out.println("end time list charges" + endTimeString);
         JSONObject options = new JSONObject();
         options.put("client_id", credentials.getClientId());
         options.put("client_secret", credentials.getClientSecret());
@@ -143,7 +143,7 @@ public class PixService {
         try {
             Gerencianet gn = new Gerencianet(options);
             JSONObject response = gn.call("pixListCharges", params, new JSONObject());
-            System.out.println(response);
+
             return response;
 
         } catch (GerencianetException e) {
@@ -177,7 +177,7 @@ public class PixService {
                         values.put("chave", cob.getString("chave"));
                         values.put("expiracao", String.valueOf(cob.getJSONObject("calendario").getInt("expiracao")));
                         values.put("status", cob.getString("status"));
-
+                        System.out.println("values" + values);
                         return Arrays.asList(values);
                     }
                 }
