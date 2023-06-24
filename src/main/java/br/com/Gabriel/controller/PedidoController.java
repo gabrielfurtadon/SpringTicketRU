@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.Gabriel.dto.IdWrapperDTO;
 import br.com.Gabriel.dto.PedidoDTO;
 import br.com.Gabriel.entities.Pedido;
 import br.com.Gabriel.entities.User;
@@ -20,6 +21,7 @@ import br.com.Gabriel.services.PedidoService;
 import br.com.Gabriel.services.UserService;
 
 //localhost:8080/user/create
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(value = "/pedidos")
 public class PedidoController {
@@ -55,11 +57,11 @@ public class PedidoController {
 	}
 
 	// payPedido
-	@CrossOrigin(origins = "*", allowedHeaders = "*")
-	@PostMapping(value = "/pay-pedido")
-	public ResponseEntity<Pedido> payPedido(@RequestBody int id) {
-		pedidoService.payPedido(id);
-		return ResponseEntity.ok().build();
+	@PostMapping(value = "/pay-pedido/{id}")
+	public ResponseEntity<Pedido> payPedido(@RequestBody IdWrapperDTO idWrapper) {
+		int id = idWrapper.getId();
+		Pedido pedido = pedidoService.payPedido(id); // modify this method to return a Pedido
+		return ResponseEntity.ok(pedido); // include the Pedido in the response
 	}
 
 	// deletePedido

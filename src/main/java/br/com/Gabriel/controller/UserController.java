@@ -92,18 +92,18 @@ public class UserController {
 
     }
 
+    // get saldo by ra
+    @GetMapping(value = "/saldo/{ra}")
+    public ResponseEntity<Integer> getUserSaldo(@PathVariable String ra) throws NotFoundException {
+        int saldo = userService.getSaldo(ra);
+        return ResponseEntity.ok().body(saldo);
+    }
+
     @GetMapping(value = "/find-all")
     public List<User> findAllUsers() {
 
         return userService.findAll();
 
-    }
-
-    // VER SALDO DO USER POR ID
-    @GetMapping(value = "/saldo/{id}")
-    public ResponseEntity<Integer> getUserSaldo(@PathVariable Long id) throws NotFoundException {
-        int saldo = userService.getSaldo(id);
-        return ResponseEntity.ok().body(saldo);
     }
 
     @GetMapping

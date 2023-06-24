@@ -95,6 +95,11 @@ public class PedidoService {
             pedido.setStatus(EStatus.PAGO);
             pedidoRepository.save(pedido);
 
+            // increment user saldo
+            User user = userRepository.findByRa(pedido.getRa());
+            user.setSaldo(user.getSaldo() + pedido.getQuantidade());
+            userRepository.save(user);
+
             return pedido;
         } catch (Exception e) {
             throw new HandlerException("Erro ao pagar pedido");
