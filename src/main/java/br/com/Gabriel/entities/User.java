@@ -77,6 +77,10 @@ public class User implements Serializable, UserDetails {
     @Column(name = "saldo")
     private int saldo;
 
+    @Column(name = "cpf")
+    @NotEmpty(message = "O campo cpf nao pode ser vazio")
+    private String cpf;
+
     // @NotNull(message = "O Campo email não pode ser vazio")
     @Column(name = "email", unique = true)
     @NotEmpty(message = "O campo email nao pode ser vazio")
@@ -117,7 +121,8 @@ public class User implements Serializable, UserDetails {
         this.role = ERole.STUDENT;
     }
 
-    public User(Long id, String ra, String password, String firstname, String lastname, int saldo, String email) {
+    public User(Long id, String ra, String password, String firstname, String lastname, int saldo, String email,
+            String cpf) {
         this.id = id;
         this.ra = ra;
         this.password = password;
@@ -126,6 +131,7 @@ public class User implements Serializable, UserDetails {
         this.saldo = saldo;
         this.email = email;
         // this.role = ERole.STUDENT;
+        this.cpf = cpf;
     }
 
     @Override
